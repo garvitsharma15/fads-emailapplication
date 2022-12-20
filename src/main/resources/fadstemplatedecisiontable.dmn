@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0z9pgew" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.1" camunda:diagramRelationId="6ebc4093-57be-415d-b47c-4c31f0866e4e" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0z9pgew" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0" camunda:diagramRelationId="6ebc4093-57be-415d-b47c-4c31f0866e4e">
   <decision id="Decision_mailformat" name="FADS_Decisiontable">
     <decisionTable id="DecisionTable_0myfxl0" hitPolicy="FIRST">
-      <input id="InputClause_0mzdamq" label="Message Code">
+      <input id="InputClause_0mzdamq" label="Message Code" biodi:width="192">
         <inputExpression id="LiteralExpression_09sffms" typeRef="string">
           <text>messageCode</text>
         </inputExpression>
       </input>
       <output id="OutputClause_03sg82x" label="HTML Template" name="htmlTemplate" typeRef="string" biodi:width="192" />
+      <output id="OutputClause_18ifpua" label="Recipient" name="recipient" typeRef="string" />
       <rule id="DecisionRule_0jz2zk9">
         <inputEntry id="UnaryTests_1y5j724">
           <text>"PRE_INT_REV"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1vtjch0">
-          <text>"one"</text>
+          <text>"&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Dear User,&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Automated Email Alert for #{case_id} and #{case_status} from&lt;b&gt; FADS!!!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Preliminary&lt;/strong&gt; Issue Acknowledged&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Thanks&lt;/p&gt;&lt;p&gt;Bot&lt;/p&gt;&lt;body&gt;&lt;/html&gt;"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1nf4c2k">
+          <text>"Case_Creator"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_13wi941">
@@ -21,7 +25,10 @@
           <text>"PRE_INT_OPN"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_11i7dzp">
-          <text>"two"</text>
+          <text>"&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Dear User,&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Automated Email Alert for #{case_id} and #{case_status} from&lt;b&gt; FADS!!!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Preliminary&lt;/strong&gt; Issue Acknowledged&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Thanks&lt;/p&gt;&lt;p&gt;Bot&lt;/p&gt;&lt;body&gt;&lt;/html&gt;"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_01kksun">
+          <text>"Case_Creator"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_0ygd4lm">
@@ -29,7 +36,10 @@
           <text>"PRE_INT_PDNG"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0yybtvu">
-          <text>"three"</text>
+          <text>"&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Dear User,&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Automated Email Alert for #{case_id} and #{case_status} from&lt;b&gt; FADS!!!&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Preliminary&lt;/strong&gt; Issue Acknowledged&lt;/p&gt;&lt;br/&gt;&lt;p&gt;Thanks&lt;/p&gt;&lt;p&gt;Bot&lt;/p&gt;&lt;body&gt;&lt;/html&gt;"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0ekf1if">
+          <text>"Section_Owner"</text>
         </outputEntry>
       </rule>
     </decisionTable>

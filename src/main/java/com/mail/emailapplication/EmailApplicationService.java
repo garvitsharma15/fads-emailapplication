@@ -1,5 +1,7 @@
 package com.mail.emailapplication;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -9,11 +11,31 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 @Service
+//@ConfigurationProperties(prefix=)
 public class EmailApplicationService {
 	private String messageBody;
+
+	@Value("${from}")
+	private String from;
+
+	@Value("${from_name}")
+	private String from_name;
+
+	@Value("${smtp_username}")
+	private String smtp_username;
+
+	@Value("${smtp_password}")
+	private String smtp_password;
+
+	@Value("${host}")
+	private String host;
+
+	@Value("${port}")
+	private int port;
 
 	public String getMessageBody() {
 		return messageBody;
@@ -22,21 +44,22 @@ public class EmailApplicationService {
 	public void setMessageBody(String messageBody) {
 		this.messageBody = messageBody;
 	}
-	
-	public Boolean sendEmail(String messageBody) throws UnsupportedEncodingException, MessagingException {
-		String FROM = "2016pcecegarvit041@poornima.org";
-		String FROMNAME = "Garvit Sharma";
 
-		String TO = "2016pcecegarvit041@poornima.org";
 
-		String SMTP_USERNAME = "AKIAYUMLG6CJ3QFPHWGL";
-		String SMTP_PASSWORD = "BBg6w8jEhQpvbDtgTrqPB2VlUd8to5bo97vd26gVXdw+";
-		String HOST = "email-smtp.ap-south-1.amazonaws.com";
+	public Boolean sendEmail(String messageBody, ArrayList<String> recipients) throws UnsupportedEncodingException, MessagingException {
 
-		int PORT = 587;
+		String FROM = from;
+		String FROMNAME = from_name;
+
+		String SMTP_USERNAME = smtp_username;
+		String SMTP_PASSWORD = smtp_password;
+		String HOST = host;
+
+		int PORT = port;
 		String SUBJECT = "Amazon SES mail test";
-		String BODY = messageBody;
-//				"<html><body><tr><td class=\"blackbar\"><table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"><tr><td align=\"left\" valign=\"middle\" class=\"left\"><p>Automated Email Alert from FADS !!</p></td></tr></table></td></tr><tr><td height=\"115\" align=\"left\" valign=\"top\"><table width=\"580\" border=\"0\" cellspacing=\"0\"cellpadding=\"0\"><tr><td width=\"290\" align=\"right\" valign=\"top\" class=\"issue\"><p><strong>Preliminary</strong> Issue Acknowledged</p></td></tr></table></td></tr><tr><td class=\"blackbar\"><table width=\"100%\" border=\"0\" cellspacing=\"0\"cellpadding=\"0\"><tr><td align=\"left\" valign=\"middle\" class=\"left\"><br/><p>Thanks</p><p>Bot</p></td></tr></body>	  </html>";
+		String str = org.apache.commons.text.StringEscapeUtils.unescapeJava(messageBody);
+		System.out.println("str"+str);
+		String BODY = str;
 
 		Properties props = System.getProperties();
 		props.put("mail.transport.protocol", "smtp");
@@ -48,19 +71,25 @@ public class EmailApplicationService {
 
 		MimeMessage msg = new MimeMessage(session);
 		msg.setFrom(new InternetAddress(FROM, FROMNAME));
-		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+
+		for (String emailId : recipients) {
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+		}
+
 		msg.setSubject(SUBJECT);
 		msg.setContent(BODY, "text/html");
 
 		Transport transport = session.getTransport();
 
 		try {
+			System.out.println("from : "+from+", " + "port : "+port);
 			System.out.println("Sending Email Using AWS SNS...");
 			transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
 			transport.sendMessage(msg, msg.getAllRecipients());
 			System.out.println("Email sent!");
 			return true;
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			System.out.println("The email was not sent.");
 			System.out.println("Error message: " + ex.getMessage());
 			return false;
@@ -69,5 +98,5 @@ public class EmailApplicationService {
 			transport.close();
 		}
 	}
-	
+
 }
